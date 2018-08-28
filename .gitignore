@@ -1,6 +1,9 @@
 # python files
 *.pyc
 
+# python cache
+__pycache__
+
 # virtual environment
 venv/
 
@@ -12,7 +15,3 @@ database.db
 
 # error file
 errors.txt
-
-__pycache__
-
-.DS_Store
