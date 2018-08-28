@@ -22,11 +22,4 @@ def processing():
 
 
 if __name__ == '__main__':
-    while True:
-        try:
-            app.run(host='0.0.0.0', port=8080)
-        except Exception as e:
-            f = open('errors.txt', 'a', encoding='utf-8')
-            f.write(str(e) + ' ### ' + str(datetime.now()) + '\n')
-            f.close()
-            time.sleep(5)
+    app.run(host='0.0.0.0', port=8080)
