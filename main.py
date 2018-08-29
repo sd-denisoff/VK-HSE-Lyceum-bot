@@ -3,17 +3,22 @@ from models import *
 from actions import *
 from flask import render_template
 from web.forms import AuthForm
+from ElJurAPI.ElJurRequest import ElJurRequest
+from ElJurAPI.ElJurCapab import *
 
 
 @app.route('/auth/<string:id>', methods=['GET', 'POST'])
 def eljur_auth(id):
     form = AuthForm()
     if form.validate_on_submit():
-        # user = User.get(User.id == id)
-        # авторизация в ЭлЖур (если ошибка, то render_template('error.html'))
-        # user.token =
-        # user.save()
-        return render_template('success.html')
+        r = ElJurRequest('/auth?login=' + form.login.data + '&password=' + form.password.data)
+        if r.is_valid:
+            user = User.get(User.id == id)
+            user.token = r.query['token']
+            user.save()
+            return render_template('success.html')
+        else:
+            return render_template('error.html', error=r.query)
     return render_template('auth.html', form=form, action='/auth/' + id)
 
 
@@ -41,8 +46,8 @@ def user_recognition(data, id):
     except User.DoesNotExist:
         User.create(id=id)
         keyboard = VkKeyboard(one_time=True)
-        keyboard.add_button(label='Да ✅ ', color=VkKeyboardColor.POSITIVE, payload={'action': 'is_account'})
-        keyboard.add_button(label='Нет ⛔', color=VkKeyboardColor.NEGATIVE, payload={'action': 'is_account'})
+        keyboard.add_button(label='Да', color=VkKeyboardColor.POSITIVE, payload={'action': 'is_account'})
+        keyboard.add_button(label='Нет', color=VkKeyboardColor.NEGATIVE, payload={'action': 'is_account'})
         vk.messages.send(user_id=id, message=open('greeting.txt', 'r').read())
         vk.messages.send(user_id=id, message='Есть ли у Вас аккаунт в системе ЭлЖур?', keyboard=keyboard.get_keyboard())
     else:
@@ -50,10 +55,17 @@ def user_recognition(data, id):
 
 
 def action_recognition(data, id, payload):
-    if payload == 'is_account':
+    if payload == 'capabilities':
+        show_capabilities(id)
+    elif payload == 'is_account':
         is_account(data, id)
     elif payload == 'auth':
         auth(data, id)
+    elif payload == 'schedule':
+        eljur_capab.change_state('schedule')
+        eljur_capab.kind_of_content(id)
+    elif payload == 'kind':
+        kind_processing(data, id)
 
 
 def text_handler(data, id):
@@ -61,7 +73,7 @@ def text_handler(data, id):
         payload = json.loads(data['payload'])
         action_recognition(data, id, payload['action'])
     else:
-        vk.messages.send(user_id=id, message='Извините, не совсем Вас понимаю 😔')
+        vk.messages.send(user_id=id, message='Извините, не совсем Вас понимаю 😔', keyboard=default_keyboard)
 
 
 if __name__ == '__main__':
