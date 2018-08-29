@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang='ru'>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Админ | Лицей</title>
+</head>
+
+<body>
+    <h1>Подтверждение прав</h1>
+
+    <form action='{{ action }}' method='POST'>
+        {{ form.hidden_tag() }}
+
+        <div>{{ form.password.label}}</div>
+        <div>{{ form.password(rows=5, cols=60) }}</div>
+        {% if form.password.errors %}
+            {% for error in form.password.errors %}
+                <div style="color: red;">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <br>
+
+        {{ form.submit }}
+    </form>
+</body>
+
+</html>

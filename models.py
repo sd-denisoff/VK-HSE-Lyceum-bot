@@ -6,6 +6,7 @@ db = SqliteDatabase('database.db')
 
 class User(Model):
     id = CharField(primary_key=True)
+    role = TextField(default='user')
     token = TextField(null=True, default=None)
     date = TextField(default='')
 

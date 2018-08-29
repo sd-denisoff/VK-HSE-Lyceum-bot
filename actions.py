@@ -17,7 +17,9 @@ def show_capabilities(id):
     keyboard.add_button(label='Стереть данные о себе', color=VkKeyboardColor.DEFAULT, payload={'action': 'forget'})
     keyboard.add_line()
     keyboard.add_button(label='Оставить отзыв', color=VkKeyboardColor.DEFAULT, payload={'action': 'review'})
+    keyboard.add_line()
     keyboard.add_button(label='О проекте', color=VkKeyboardColor.DEFAULT, payload={'action': 'about'})
+    keyboard.add_button(label='Помощь', color=VkKeyboardColor.DEFAULT, payload={'action': 'help'})
     vk.messages.send(user_id=id, message='Возможности 👇', keyboard=keyboard.get_keyboard())
 
 
@@ -55,4 +57,9 @@ def leave_review(id):
 
 def about(id):
     vk.messages.send(user_id=id, message='Официальный бот Лицея ВШЭ.\nПроект разработан лицеистами с направлений МатИнфо, гум. науки, дизайн и юриспруденция',
+                     keyboard=default_keyboard)
+
+
+def help(id):
+    vk.messages.send(user_id=id, message='Для вопросов, предложений и сообщений об ошибках пишите на почту - sd.denisoff@gmail.com',
                      keyboard=default_keyboard)

@@ -2,7 +2,7 @@ from config import *
 from models import *
 from actions import *
 from flask import render_template
-from web.forms import AuthForm, ReviewForm
+from web.forms import AuthForm, ReviewForm, ConfirmRole
 from ElJurAPI.ElJurRequest import ElJurRequest
 from ElJurAPI.ElJurCapab import *
 from calendar_keyboard import create_calendar
@@ -18,10 +18,24 @@ def eljur_auth(id):
             user = User.get(User.id == id)
             user.token = r.query['token']
             user.save()
-            return render_template('auth_success.html')
+            return render_template('auth_result.html', result='Авторизация прошла успешно!')
         else:
-            return render_template('auth_error.html', error=r.query)
+            return render_template('auth_result.html', result='Во время авторизации произошла ошибка!', error=r.query)
     return render_template('auth.html', form=form, action='/auth/' + id)
+
+
+@app.route('/confirm/<string:id>', methods=['GET', 'POST'])
+def confirm_role(id):
+    form = ConfirmRole()
+    if form.validate_on_submit():
+        if form.password.data == 'admin':
+            user = User.get(User.id == id)
+            user.role = 'admin'
+            user.save()
+            return render_template('confirm_result.html', result='Права успешно подтверждены!')
+        else:
+            return render_template('confirm_result.html', result='Неверный пароль!')
+    return render_template('confirm.html', form=form, action='/confirm/' + id)
 
 
 @app.route('/review', methods=['GET', 'POST'])
@@ -29,7 +43,7 @@ def review():
     form = ReviewForm()
     if form.validate_on_submit():
         Review.create(text=form.review.data, date=date.today().strftime('%d-%m-%Y'))
-        return render_template('review_success.html')
+        return render_template('review_result.html', result='Спасибо за отзыв! Нам важно ваше мнение :)')
     return render_template('review.html', form=form)
 
 
@@ -93,12 +107,16 @@ def action_recognition(data, id, payload):
         leave_review(id)
     elif payload['action'] == 'about':
         about(id)
+    elif payload['action'] == 'help':
+        help(id)
 
 
 def text_handler(data, id):
     if 'payload' in data.keys():
         payload = json.loads(data['payload'])
         action_recognition(data, id, payload)
+    elif data['text'] == 'Я твой админ':
+        vk.messages.send(user_id=id, message='Страница подтверждения прав 👇 \n' + APP_URL + '/confirm/' + id, keyboard=default_keyboard)
     else:
         vk.messages.send(user_id=id, message='Извините, не совсем Вас понимаю 😔', keyboard=default_keyboard)
 
