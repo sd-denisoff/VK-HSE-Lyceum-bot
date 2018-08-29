@@ -7,8 +7,6 @@ db = SqliteDatabase('database.db')
 class User(Model):
     id = CharField(primary_key=True)
     token = TextField(null=True, default=None)
-    login = TextField(null=True, default=None)
-    password = TextField(null=True, default=None)
     date = TextField(default='')
 
     class Meta:

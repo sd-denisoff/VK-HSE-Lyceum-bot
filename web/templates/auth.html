@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='ru'>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>ЭлЖур | Лицей</title>
+</head>
+
+<body>
+    <h1>Лицей НИУ ВШЭ</h1>
+    <h2>Авторизация в ЭлЖур</h2>
+
+    <form action='{{ action }}' method='POST'>
+        {{ form.hidden_tag() }}
+
+        <div>{{ form.login.label}}</div>
+        <div>{{ form.login(rows=5, cols=60) }}</div>
+        {% if form.login.errors %}
+            {% for error in form.login.errors %}
+                <div style="color: red;">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <br>
+
+        <div>{{ form.password.label}}</div>
+        <div>{{ form.password(rows=5, cols=60) }}</div>
+        {% if form.password.errors %}
+            {% for error in form.password.errors %}
+                <div style="color: red;">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <br>
+
+        {{ form.submit }}
+    </form>
+
+    <h4>Вырвиглазный дизайн поправим потом :)</h4>
+</body>
+
+</html>
