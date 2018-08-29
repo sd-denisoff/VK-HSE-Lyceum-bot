@@ -91,6 +91,8 @@ def action_recognition(data, id, payload):
         forget_user(id)
     elif payload['action'] == 'review':
         leave_review(id)
+    elif payload['action'] == 'about':
+        about(id)
 
 
 def text_handler(data, id):

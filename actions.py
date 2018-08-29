@@ -17,6 +17,7 @@ def show_capabilities(id):
     keyboard.add_button(label='Стереть данные о себе', color=VkKeyboardColor.DEFAULT, payload={'action': 'forget'})
     keyboard.add_line()
     keyboard.add_button(label='Оставить отзыв', color=VkKeyboardColor.DEFAULT, payload={'action': 'review'})
+    keyboard.add_button(label='О проекте', color=VkKeyboardColor.DEFAULT, payload={'action': 'about'})
     vk.messages.send(user_id=id, message='Возможности 👇', keyboard=keyboard.get_keyboard())
 
 
@@ -50,3 +51,8 @@ def forget_user(id):
 
 def leave_review(id):
     vk.messages.send(user_id=id, message='Форма отправки отзыва 👇 \n' + APP_URL + '/review', keyboard=default_keyboard)
+
+
+def about(id):
+    vk.messages.send(user_id=id, message='Официальный бот Лицея ВШЭ.\nПроект разработан лицеистами с направлений МатИнфо, гум. науки, дизайн и юриспруденция',
+                     keyboard=default_keyboard)
