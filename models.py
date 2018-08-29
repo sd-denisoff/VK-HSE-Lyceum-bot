@@ -15,8 +15,8 @@ class User(Model):
 
 
 class Review(Model):
-    author = TextField()
     text = TextField()
+    date = TextField()
 
     class Meta:
         database = db

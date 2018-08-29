@@ -2,10 +2,11 @@ from config import *
 from models import *
 from actions import *
 from flask import render_template
-from web.forms import AuthForm
+from web.forms import AuthForm, ReviewForm
 from ElJurAPI.ElJurRequest import ElJurRequest
 from ElJurAPI.ElJurCapab import *
 from calendar_keyboard import create_calendar
+from datetime import date
 
 
 @app.route('/auth/<string:id>', methods=['GET', 'POST'])
@@ -17,10 +18,19 @@ def eljur_auth(id):
             user = User.get(User.id == id)
             user.token = r.query['token']
             user.save()
-            return render_template('success.html')
+            return render_template('auth_success.html')
         else:
-            return render_template('error.html', error=r.query)
+            return render_template('auth_error.html', error=r.query)
     return render_template('auth.html', form=form, action='/auth/' + id)
+
+
+@app.route('/review', methods=['GET', 'POST'])
+def review():
+    form = ReviewForm()
+    if form.validate_on_submit():
+        Review.create(text=form.review.data, date=date.today().strftime('%d-%m-%Y'))
+        return render_template('review_success.html')
+    return render_template('review.html', form=form)
 
 
 @app.route('/', methods=['GET', 'HEAD'])
@@ -77,6 +87,10 @@ def action_recognition(data, id, payload):
         user.date = payload['date']
         user.save()
         eljur_capab.get_content(id)
+    elif payload['action'] == 'forget':
+        forget_user(id)
+    elif payload['action'] == 'review':
+        leave_review(id)
 
 
 def text_handler(data, id):

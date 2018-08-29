@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='ru'>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Отзыв | Лицей</title>
+</head>
+
+<body>
+    <h1>Бот Лицея ВШЭ</h1>
+
+    <form action='/review' method='POST'>
+        {{ form.hidden_tag() }}
+
+        <p>Отзывы являются анонимными</p>
+        <div>{{ form.review.label}}</div>
+        <div>{{ form.review(rows=5, cols=60) }}</div>
+        {% if form.review.errors %}
+            {% for error in form.review.errors %}
+                <div style="color: red;">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <br>
+
+        {{ form.submit }}
+    </form>
+</body>
+
+</html>
