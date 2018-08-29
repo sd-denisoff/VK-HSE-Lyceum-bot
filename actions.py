@@ -11,7 +11,9 @@ def show_capabilities(id):
     keyboard = VkKeyboard(one_time=True)
     keyboard.add_button(label='Узнать расписание', color=VkKeyboardColor.PRIMARY, payload={'action': 'schedule'})
     keyboard.add_line()
-    keyboard.add_button(label='Пройти авторизацию', color=VkKeyboardColor.DEFAULT,payload={'action': 'auth'})
+    keyboard.add_button(label='Узнать ДЗ', color=VkKeyboardColor.DEFAULT, payload={'action': 'homework'})
+    keyboard.add_line()
+    keyboard.add_button(label='Пройти авторизацию', color=VkKeyboardColor.PRIMARY, payload={'action': 'auth'})
     vk.messages.send(user_id=id, message='Возможности 👇', keyboard=keyboard.get_keyboard())
 
 

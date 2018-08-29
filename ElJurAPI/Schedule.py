@@ -19,7 +19,7 @@ class ScheduleState(AbstractState):
         user = User.get(User.id == id)
         r = ElJurRequest('/getschedule?auth_token=' + user.token + '&days=' + user.date)
         if not r.is_valid:
-            vk.messaged.send(user_id=id, message=r.query, keyboard=default_keyboard)
+            vk.messages.send(user_id=id, message=r.query, keyboard=default_keyboard)
             return None
         if not r.query:
             vk.messages.send(user_id=id, message='Занятий в этот день нет! Ну, или же Вы указали некорректную дату',

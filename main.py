@@ -5,6 +5,7 @@ from flask import render_template
 from web.forms import AuthForm
 from ElJurAPI.ElJurRequest import ElJurRequest
 from ElJurAPI.ElJurCapab import *
+from calendar_keyboard import create_calendar
 
 
 @app.route('/auth/<string:id>', methods=['GET', 'POST'])
@@ -55,23 +56,33 @@ def user_recognition(data, id):
 
 
 def action_recognition(data, id, payload):
-    if payload == 'capabilities':
+    if payload['action'] == 'capabilities':
         show_capabilities(id)
-    elif payload == 'is_account':
+    elif payload['action'] == 'is_account':
         is_account(data, id)
-    elif payload == 'auth':
+    elif payload['action'] == 'auth':
         auth(data, id)
-    elif payload == 'schedule':
+    elif payload['action'] == 'schedule':
         eljur_capab.change_state('schedule')
         eljur_capab.kind_of_content(id)
-    elif payload == 'kind':
+    elif payload['action'] == 'homework':
+        eljur_capab.change_state('homework')
+        eljur_capab.kind_of_content(id)
+    elif payload['action'] == 'kind':
         kind_processing(data, id)
+    elif payload['action'] == 'title':
+        vk.messages.send(user_id=id, message='Необходимо выбрать дату!', keyboard=create_calendar())
+    elif payload['action'] == 'calendar':
+        user = User.get(User.id == id)
+        user.date = payload['date']
+        user.save()
+        eljur_capab.get_content(id)
 
 
 def text_handler(data, id):
     if 'payload' in data.keys():
         payload = json.loads(data['payload'])
-        action_recognition(data, id, payload['action'])
+        action_recognition(data, id, payload)
     else:
         vk.messages.send(user_id=id, message='Извините, не совсем Вас понимаю 😔', keyboard=default_keyboard)
 
