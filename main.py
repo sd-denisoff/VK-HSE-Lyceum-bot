@@ -39,7 +39,7 @@ def confirm_role(id):
 
 
 @app.route('/review', methods=['GET', 'POST'])
-def review():
+def leave_review():
     form = ReviewForm()
     if form.validate_on_submit():
         Review.create(text=form.review.data, date=date.today().strftime('%d-%m-%Y'))
@@ -101,14 +101,18 @@ def action_recognition(data, id, payload):
         user.date = payload['date']
         user.save()
         eljur_capab.get_content(id)
-    elif payload['action'] == 'forget':
-        forget_user(id)
+    elif payload['action'] == 'logout':
+        logout(id)
     elif payload['action'] == 'review':
-        leave_review(id)
+        review(id)
     elif payload['action'] == 'about':
         about(id)
     elif payload['action'] == 'help':
         help(id)
+    elif payload['action'] == 'get_statistics':
+        statistics(id)
+    elif payload['action'] == 'view_reviews':
+        pass
 
 
 def text_handler(data, id):
