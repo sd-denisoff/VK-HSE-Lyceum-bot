@@ -3,6 +3,7 @@ from models import *
 from actions import default_keyboard
 from ElJurAPI.ElJurRequest import ElJurRequest
 from ElJurAPI.AbstractState import AbstractState
+import requests
 
 
 class HomeworkState(AbstractState):
@@ -31,19 +32,24 @@ class HomeworkState(AbstractState):
         return homework
 
     def send(self, id, homework):
-        day_temp = '{0} ({1}.{2}.{3})\n'
-        subj_temp = '{0} - {1}\n'
-        for day in sorted(homework.keys()):
-            date = homework[day]['name'][6:], homework[day]['name'][4:6], homework[day]['name'][:4]
-            homework_list = day_temp.format(homework[day]['title'], date[0], date[1], date[2])
+        day_temp = '{title} ({date})\n\n'
+        subj_temp = '{num}. {name}\n{tasks}\n\n'
+        for day in sorted(homework.keys(), key=lambda d: len(d)):
+            date = '.'.join([day[6:], day[4:6], day[:4]])
+            response = day_temp.format(title=homework[day]['title'].upper(), date=date)
             subjects = homework[day].get('items', {})
-            for subj in sorted(subjects.keys()):
+            num = 1
+            for subj in sorted(subjects.keys(), key=lambda s: len(s)):
                 name = subjects[subj].get('name', '')
                 tasks = ''
-                for hw in subjects[subj]['homework'].keys():
-                    tasks += subjects[subj]['homework'][hw]['value']
-                    for f in subjects[subj].get('files', []):
-                        if subjects[subj]['homework'][hw]['id'] == f['toid']:
-                            tasks += ' <a href="' + f['link'] + '">' + f['filename'] + '</a> '
-                homework_list += subj_temp.format(name, tasks)
-            vk.messages.send(user_id=id, message=homework_list, keyboard=default_keyboard)
+                hw = subjects[subj]
+                for t in hw['homework'].keys():
+                    tasks += hw['homework'][t]['value'] + '\n'
+                    # for f in hw.get('files', []):
+                    #     url = vk.docs.getMessagesUploadServer(peer_id=id)['upload_url']
+                    #     r = requests.post(url, files={'file': open('config.py', 'rb')}).json()
+                    #     test_file = vk.docs.save(file=r['file'], title='kek')[0]
+                    #     tasks += f['link'] + '\n'
+                response += subj_temp.format(num=num, name=name, tasks=tasks)
+                num += 1
+            vk.messages.send(user_id=id, message=response, keyboard=default_keyboard)

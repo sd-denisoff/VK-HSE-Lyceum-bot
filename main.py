@@ -43,7 +43,7 @@ def leave_review():
     form = ReviewForm()
     if form.validate_on_submit():
         Review.create(text=form.review.data, date=date.today().strftime('%d-%m-%Y'))
-        return render_template('review_result.html', result='Спасибо за отзыв! Нам важно ваше мнение :)')
+        return render_template('review_result.html', result='Спасибо за отзыв! Нам важно Ваше мнение :)')
     return render_template('review.html', form=form)
 
 
@@ -119,7 +119,7 @@ def text_handler(data, id):
     if 'payload' in data.keys():
         payload = json.loads(data['payload'])
         action_recognition(data, id, payload)
-    elif data['text'] == 'Я твой админ':
+    elif data['text'] == 'Я админ':
         vk.messages.send(user_id=id, message='Страница подтверждения прав 👇 \n' + APP_URL + '/confirm/' + id, keyboard=default_keyboard)
     else:
         vk.messages.send(user_id=id, message='Извините, не совсем Вас понимаю 😔', keyboard=default_keyboard)

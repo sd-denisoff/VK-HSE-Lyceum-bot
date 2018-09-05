@@ -25,19 +25,18 @@ class ScheduleState(AbstractState):
             vk.messages.send(user_id=id, message='Занятий в этот день нет! Ну, или же Вы указали некорректную дату',
                              keyboard=default_keyboard)
             return None
-        schedule = r.query.get('students', [])[0]
-        schedule = schedule.get('days', {})
+        schedule = r.query.get('students', {})
+        key = list(schedule.keys())[0]
+        schedule = schedule[key].get('days', {})
         return schedule
 
     def send(self, id, schedule):
         day_temp = '{title} ({date})\n'
-        subj_temp = '{num}. {name}'
-        for day in sorted(schedule.keys()):
+        subj_temp = '{num}. {name} {room}\n'
+        for day in sorted(schedule.keys(), key=lambda d: len(d)):
             date = '.'.join([day[6:], day[4:6], day[:4]])
             response = day_temp.format(title=schedule[day]['title'], date=date)
             subjects = schedule[day].get('items', {})
-            for subj in sorted(subjects.keys()):
-                response += subj_temp.format(num=subj, name=subjects[subj]['name'])
-                if subjects[subj].get('room') is not None:
-                    response +=  ' ' + subjects[subj]['room'] + '\n'
+            for subj in sorted(subjects.keys(), key=lambda s: len(s)):
+                response += subj_temp.format(num=subj, name=subjects[subj]['name'], room=subjects[subj].get('room', ''))
             vk.messages.send(user_id=id, message=response, keyboard=default_keyboard)
