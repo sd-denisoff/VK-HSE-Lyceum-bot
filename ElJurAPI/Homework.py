@@ -4,6 +4,8 @@ from actions import default_keyboard
 from ElJurAPI.ElJurRequest import ElJurRequest
 from ElJurAPI.AbstractState import AbstractState
 import requests
+from pytils import translit
+import os
 
 
 class HomeworkState(AbstractState):
@@ -38,6 +40,7 @@ class HomeworkState(AbstractState):
             date = '.'.join([day[6:], day[4:6], day[:4]])
             response = day_temp.format(title=homework[day]['title'].upper(), date=date)
             subjects = homework[day].get('items', {})
+            list_of_attachs = list()
             num = 1
             for subj in sorted(subjects.keys(), key=lambda s: len(s)):
                 name = subjects[subj].get('name', '')
@@ -45,11 +48,16 @@ class HomeworkState(AbstractState):
                 hw = subjects[subj]
                 for t in hw['homework'].keys():
                     tasks += hw['homework'][t]['value'] + '\n'
-                    # for f in hw.get('files', []):
-                    #     url = vk.docs.getMessagesUploadServer(peer_id=id)['upload_url']
-                    #     r = requests.post(url, files={'file': open('config.py', 'rb')}).json()
-                    #     test_file = vk.docs.save(file=r['file'], title='kek')[0]
-                    #     tasks += f['link'] + '\n'
+                    for f in hw.get('files', []):
+                        r = requests.get(url=f['link'], headers={'User-Agent': 'Mozilla/5.0'})
+                        filename = translit.translify(f['filename'])
+                        with open('ElJurAPI/DocsBuff/' + filename, 'wb') as doc:
+                            doc.write(r.content)
+                        url = vk.docs.getMessagesUploadServer(peer_id=id)['upload_url']
+                        r = requests.post(url=url, files={'file': open('ElJurAPI/DocsBuff/' + filename, 'rb')}).json()
+                        attach = vk.docs.save(file=r['file'])[0]
+                        list_of_attachs.append('doc' + str(attach['owner_id']) + '_' + str(attach['id']))
+                        os.remove('ElJurAPI/DocsBuff/' + filename)
                 response += subj_temp.format(num=num, name=name, tasks=tasks)
                 num += 1
-            vk.messages.send(user_id=id, message=response, keyboard=default_keyboard)
+            vk.messages.send(user_id=id, message=response, attachment=list_of_attachs, keyboard=default_keyboard)
