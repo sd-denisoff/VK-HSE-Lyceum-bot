@@ -111,8 +111,8 @@ def action_recognition(data, id, payload):
         help(id)
     elif payload['action'] == 'get_statistics':
         statistics(id)
-    elif payload['action'] == 'view_reviews':
-        pass
+    elif payload['action'] == 'read_reviews':
+        read_reviews(id)
 
 
 def text_handler(data, id):
