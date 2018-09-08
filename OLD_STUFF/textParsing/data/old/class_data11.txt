@@ -1,0 +1,240 @@
+Домашнее задание покажи;homework
+Мне нужно дз;homework
+Задание на завтра;homework
+Задание на послезавтра;homework
+По английскому задание есть?;homework
+Задание есть?;homework
+Что задали?;homework
+Что там по домашке;homework
+Домашку в студию!;homework
+какое на завтра задание;homework
+задание;homework
+задание на завтра;homework
+ДЗ;homework
+дз нужно;homework
+дз на завтра;homework
+задание на завтра;homework
+домашнее задание на завтра;homework
+дз на среду;homework
+задание на воскресенье;homework
+домашнее задание на понедельник;homework
+дз на март;homework
+задание на февраль;homework
+домашнее задание на июпь;homework
+Мое дз;homework
+Мое задание;homework
+Моё дз;homework
+Моё домашнее задание;homework
+Дз по;homework
+Дз по русскому;homework
+Домашнее задание;homework
+Задание покажите;homework
+Требую задание сейчас же;homework
+Задание срочно;homework
+Что по русскому?;homework
+Что по алгебре?;homework
+Что по праву?;homework
+Что по домашке?;homework
+Покажи задание;homework
+нужно дз;homework
+нужно задание;homework
+задание покажите;homework
+Ты знаешь задание?;homework
+Завтра какие уроки?;schedule
+Покажи расписание на завтра;schedule
+Расписание;schedule
+Скорее расписание;schedule
+Уроки;schedule
+Расписание на послезавтра;schedule
+Что мне завтра брать с собой?;schedule
+Брать ли мне алгебру?;schedule
+Брать мне литературу?;schedule
+Брать мне русский?;schedule
+Что мне взять с собой?;schedule
+Какие завтра уроки?;schedule
+Какие уроки на этой недели?;schedule
+Будет завтра география?;schedule
+Будет завтра право?;schedule
+Что по урокам?;schedule
+На неделю расписание;schedule
+Я хочу знать уроки на завтра;schedule
+Покажи уроки;schedule
+расписание на;schedule
+расписание на завтра;schedule
+завтрашнее расписание;schedule
+расписание на вторник;schedule
+Мое расписание;schedule
+Покажи оценки;marks
+Покажи оценки по русскому;marks
+Моя успеваемость;marks
+Оценки;marks
+Мои оценки;marks
+оценки покажи;marks
+Сейчас нужны оценки;marks
+Что можно сделать;commands
+Что могу делать;commands
+Команды;commands
+Список команд;commands
+Что ты умеешь делать?;commands
+Что ты умеешь?;commands
+Что ты можешь?;commands
+Что ты делаешь?;commands
+Давай играть!;game
+Запускай игру!;game
+Запускай игры!;game
+Играть хочу!;game
+Активируй Игровой режим;game
+Войди в Игровой режим;game
+Запусти Игровой режим;game
+Игровой режим;game
+Игры;game
+Кто ты такой?;other
+Как тебя звать;other
+Что за бот;other
+О проекте;other
+Кто твой отец?;other
+Создатели?;other
+Кто тебя создал;other
+Расскажи о себе;other
+Имя твое;other
+Отличная погода;other
+Как дела;other
+Привет;other
+Мне плохо;other
+Сколько тебе лет?;other
+Эй;other
+Я хочу домой;other
+Как настроение;other
+Какие у тебя интересы;other
+Мне скучно;other
+Поговори со мной;other
+Как тебе моя прическа?;other
+Где ты живешь;other
+Как ты без меня?;other
+Соскучился?;other
+Дз не показывай;other
+Я не хочу знать уроки на завтра;other
+Не рассказывай про уроки;other
+Баги исправляешь?;other
+Лол;other
+Я хочу есть;other
+Я молодец;other
+не хочу дз;other
+не хочу заданий;other
+не надо;other
+да да;other
+а я кто;other
+Ага.;other
+Как вы быстро печатаете);other
+Привет!;other
+Привет;other
+Как дела?;other
+Все отлично!;other
+Приятно слышать;other
+Ага.;other
+Как вы быстро печатаете);other
+Доброе утро!;other
+доброе!;other
+Как дела?;other
+Хорошо, а у тебя?;other
+Да, тоже не плохо;other
+Рад слышать.;other
+Привет!;other
+Как дела?;other
+Все отлично!;other
+Приятно слышать;other
+Ага.;other
+Как вы быстро печатаете);other
+Могу, ли я вам помочь?;other
+у меня есть вопрос.;other
+Задавайте.;other
+В любом случае, спасибо;other
+Нет проблем.;other
+Как дела?;other
+У меня все отлично, а что насчет тебя?;other
+Отлично.;other
+Это хорошо.;other
+Ты слышал последние новости?;other
+Конечно!;other
+Задавайте.;other
+В любом случае, спасибо;other
+затем;other
+неи;other
+фиксы;other
+очень;other
+стоять;other
+надо;other
+мы;other
+макбук;other
+мак;other
+же;other
+быстро;other
+русский;other
+но;other
+круто;other
+без;other
+попсой;other
+я выбираю тебя;other
+что там;other
+на завтра;other
+что;other
+что тебе нравится;other
+и что;other
+пока;other
+до новых встреч!;other
+пока-пока!;other
+до свидания;other
+пока.;other
+прощай;other
+пока-пока.;other
+тупой;other
+дибил;other
+ты даун;other
+не хочу!;other
+ок;other
+я все решил;other
+привет;other
+завтра;other
+сегодня;other
+послезавтра;other
+вчера;other
+на днях;other
+когда;other
+зачем;other
+почему;other
+да;other
+нет;other
+Мое;other
+Мои;other
+Моя;other
+ты мне никто;other
+ужасно;other
+ты тупая;other
+исправить;other
+Ладно;other
+Мои дела;other
+Как же так может быть;other
+Это мои проблемы;other
+Супер;other
+Отлично;other
+Лучший;other
+Худший;other
+Хуже;other
+Отстань;other
+Не надо;other
+Надо;other
+Хочу;other
+Как так;other
+Лицей мой дом;other
+Лицей;other
+Лицеи;other
+Привет как твои дела;other
+Что ты любишь?;other
+Что ты хочешь?;other
+Что ты?;other
+Ну Что ты?;other
+Йцукенгшщзхъёэждлорпавыфячсмитьбю;other
+qwertyuiop[]\';lkjhgfdsazxcvbnm,;other
+Погода была отличная;other
+ыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы;other
+Так;other
