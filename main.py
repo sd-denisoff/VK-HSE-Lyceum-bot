@@ -92,6 +92,9 @@ def action_recognition(data, id, payload):
     elif payload['action'] == 'homework':
         eljur_capab.change_state('homework')
         eljur_capab.kind_of_content(id)
+    elif payload['action'] == 'marks':
+        eljur_capab.change_state('marks')
+        eljur_capab.get_content(id)
     elif payload['action'] == 'kind':
         kind_processing(data, id)
     elif payload['action'] == 'title':

@@ -15,8 +15,10 @@ def show_capabilities(id):
     if user.token is None:
         keyboard.add_button(label='Пройти авторизацию', color=VkKeyboardColor.DEFAULT, payload={'action': 'auth'})
     else:
-        keyboard.add_button(label='Узнать расписание', color=VkKeyboardColor.PRIMARY, payload={'action': 'schedule'})
         keyboard.add_button(label='Узнать ДЗ', color=VkKeyboardColor.PRIMARY, payload={'action': 'homework'})
+        keyboard.add_button(label='Узнать оценки', color=VkKeyboardColor.PRIMARY, payload={'action': 'marks'})
+        keyboard.add_line()
+        keyboard.add_button(label='Узнать расписание', color=VkKeyboardColor.PRIMARY, payload={'action': 'schedule'})
         keyboard.add_line()
         keyboard.add_button(label='Выйти из аккаунта ЭлЖур', color=VkKeyboardColor.DEFAULT, payload={'action': 'logout'})
 

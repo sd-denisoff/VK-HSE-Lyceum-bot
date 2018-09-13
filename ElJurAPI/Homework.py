@@ -44,7 +44,7 @@ class HomeworkState(AbstractState):
             num = 1
             for subj in sorted(subjects.keys(), key=lambda s: len(s)):
                 name = subjects[subj].get('name', '')
-                tasks = ''
+                tasks = str()
                 hw = subjects[subj]
                 for t in hw['homework'].keys():
                     tasks += hw['homework'][t]['value'] + '\n'
