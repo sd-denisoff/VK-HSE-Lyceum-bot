@@ -10,7 +10,6 @@ class User(Model):
     token = TextField(null=True, default=None)
     date = TextField(default='')
 
-
     class Meta:
         database = db
         db_table = 'Users'

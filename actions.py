@@ -32,7 +32,6 @@ def show_capabilities(id):
         keyboard.add_line()
         keyboard.add_button(label='Статистика', color=VkKeyboardColor.POSITIVE, payload={'action': 'get_statistics'})
         keyboard.add_button(label='Отзывы', color=VkKeyboardColor.POSITIVE, payload={'action': 'read_reviews'})
-        keyboard.add_line()
         keyboard.add_button(label='Рассылка', color=VkKeyboardColor.POSITIVE, payload={'action': 'make_newsletter'})
 
     vk.messages.send(user_id=id, message='Возможности 👇', keyboard=keyboard.get_keyboard())
@@ -83,7 +82,7 @@ def help(id):
                      keyboard=default_keyboard)
 
 
-def statistics(id):
+def get_statistics(id):
     reg = User.select().count()
     auth = User.select().where(User.token != None).count()
     vk.messages.send(user_id=id, message='Зарегистрировано - ' + str(reg) + '\n' + 'Авторизовано - ' + str(auth), keyboard=default_keyboard)
@@ -91,20 +90,20 @@ def statistics(id):
 
 def read_reviews(id):
     all = Review.select().count()
-    for_reading = Review.select().where(Review.was_read == False).first()
-    if for_reading is None:
+    for_view = Review.select().where(Review.was_read == False).first()
+    if for_view is None:
         vk.messages.send(user_id=id, message='Новых отзывов нет 🙁', keyboard=default_keyboard)
     else:
-        for_reading.was_read = True
-        for_reading.save()
-    review_temp = 'Текст: {text}\nДата: {date}'
+        for_view.was_read = True
+        for_view.save()
+    review_temp = '{text}\nДата: {date}'
     keyboard = VkKeyboard(one_time=True)
-    if for_reading.id != all:
-        keyboard.add_button(label='Следующий (' + str(for_reading.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'read_reviews'})
+    if for_view.id != all:
+        keyboard.add_button(label='Следующий (' + str(for_view.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'read_reviews'})
     else:
-        keyboard.add_button(label='Всё прочитано! (' + str(for_reading.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'capabilities'})
-    vk.messages.send(user_id=id, message=review_temp.format(text=for_reading.text, date=for_reading.date), keyboard=keyboard.get_keyboard())
+        keyboard.add_button(label='Всё прочитано! (' + str(for_view.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'capabilities'})
+    vk.messages.send(user_id=id, message=review_temp.format(text=for_view.text, date=for_view.date), keyboard=keyboard.get_keyboard())
 
 
 def make_newsletter(id):
-    vk.messages.send(user_id=id, message='Страница создания рассылки 👇 \n' + APP_URL + '/news', keyboard=default_keyboard)
+    vk.messages.send(user_id=id, message='Страница создания рассылки 👇 \n' + APP_URL + '/mailing', keyboard=default_keyboard)

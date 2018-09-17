@@ -2,7 +2,7 @@ from config import *
 from models import *
 from actions import *
 from flask import render_template
-from web.forms import AuthForm, ConfirmRoleForm, NewsForm, ReviewForm
+from web.forms import AuthForm, ConfirmRoleForm, ReviewForm, MailingForm
 from ElJurAPI.ElJurRequest import ElJurRequest
 from ElJurAPI.ElJurCapab import *
 from calendar_keyboard import create_calendar
@@ -18,9 +18,9 @@ def eljur_auth(id):
             user = User.get(User.id == id)
             user.token = r.query['token']
             user.save()
-            return render_template('auth_result.html', result='Авторизация прошла успешно!')
+            return render_template('result.html', result='Авторизация прошла успешно!')
         else:
-            return render_template('auth_result.html', result='Во время авторизации произошла ошибка!', error=r.query)
+            return render_template('result.html', result=r.query)
     return render_template('auth.html', form=form, action='/auth/' + id)
 
 
@@ -32,20 +32,24 @@ def confirm_role(id):
             user = User.get(User.id == id)
             user.role = 'admin'
             user.save()
-            return render_template('confirm_result.html', result='Права успешно подтверждены!')
+            return render_template('result.html', result='Права успешно подтверждены!')
         else:
-            return render_template('confirm_result.html', result='Неверный пароль!')
+            return render_template('result.html', result='Неверный пароль!')
     return render_template('confirm.html', form=form, action='/confirm/' + id)
 
 
-@app.route('/news', methods=['GET', 'POST'])
-def make_news():
-    form = NewsForm()
+@app.route('/mailing', methods=['GET', 'POST'])
+def mailing():
+    form = MailingForm()
     if form.validate_on_submit():
+        # user_ids = [user.id for user in User.select()]
+        message = 'ОБЪЯВЛЕНИЕ!\n' + form.message.data
+        if form.sender.data:
+            message += '\nОтправитель: ' + form.sender.data
         for user in User.select():
-            vk.messages.send(user_id=str(user.id), message='ОБЪЯВЛЕНИЕ!\n' + form.message.data)
-        return render_template('news_result.html', result='Сообщение успешно отослано всем пользователям бота!')
-    return render_template('news.html', form=form)
+            vk.messages.send(user_id=str(user.id), message=message)
+        return render_template('result.html', result='Сообщение успешно разослано всем пользователям!')
+    return render_template('mailing.html', form=form)
 
 
 @app.route('/review', methods=['GET', 'POST'])
@@ -53,7 +57,7 @@ def leave_review():
     form = ReviewForm()
     if form.validate_on_submit():
         Review.create(text=form.review.data, date=date.today().strftime('%d-%m-%Y'))
-        return render_template('review_result.html', result='Спасибо за отзыв! Нам важно Ваше мнение :)')
+        return render_template('result.html', result='Спасибо за отзыв! Нам важно Ваше мнение :)')
     return render_template('review.html', form=form)
 
 
@@ -123,7 +127,7 @@ def action_recognition(data, id, payload):
     elif payload['action'] == 'help':
         help(id)
     elif payload['action'] == 'get_statistics':
-        statistics(id)
+        get_statistics(id)
     elif payload['action'] == 'read_reviews':
         read_reviews(id)
     elif payload['action'] == 'make_newsletter':

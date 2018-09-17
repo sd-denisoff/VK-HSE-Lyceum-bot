@@ -3,17 +3,29 @@
 
 <head>
     <meta charset='UTF-8'>
-    <title>Рассылка | Лицей</title>
+    <title>Бот | Лицей ВШЭ</title>
 </head>
 
 <body>
-    <form action='/news' method='POST'>
+    <h2>Рассылка</h2>
+
+    <form action='/mailing' method='POST'>
         {{ form.hidden_tag() }}
 
         <div>{{ form.message.label}}</div>
         <div>{{ form.message(rows=5, cols=60) }}</div>
         {% if form.message.errors %}
             {% for error in form.message.errors %}
+                <div style="color: red;">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <br>
+
+        <div>{{ form.sender.label}}</div>
+        <div>{{ form.sender(rows=5, cols=60) }}</div>
+        {% if form.sender.errors %}
+            {% for error in form.sender.errors %}
                 <div style="color: red;">{{ error }}</div>
             {% endfor %}
         {% endif %}

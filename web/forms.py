@@ -14,12 +14,13 @@ class ConfirmRoleForm(FlaskForm):
     submit = SubmitField('Подтвердить')
 
 
-class NewsForm(FlaskForm):
-    message = StringField(label='Сообщение для рассылки', validators=[DataRequired(message='Это обязательное поле')])
-    submit = SubmitField('Отправить')
-
-
 class ReviewForm(FlaskForm):
     review = StringField(label='Напишите Ваш отзыв', validators=[DataRequired(message='Это обязательное поле'),
                                                                  Length(5, message='Количество символов должно превышать 5')])
+    submit = SubmitField('Отправить')
+
+
+class MailingForm(FlaskForm):
+    message = StringField(label='Сообщение для рассылки', validators=[DataRequired(message='Это обязательное поле')])
+    sender = StringField(label='Отправитель')
     submit = SubmitField('Отправить')
