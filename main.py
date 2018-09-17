@@ -2,7 +2,7 @@ from config import *
 from models import *
 from actions import *
 from flask import render_template
-from web.forms import AuthForm, ReviewForm, ConfirmRole
+from web.forms import AuthForm, ConfirmRoleForm, NewsForm, ReviewForm
 from ElJurAPI.ElJurRequest import ElJurRequest
 from ElJurAPI.ElJurCapab import *
 from calendar_keyboard import create_calendar
@@ -26,7 +26,7 @@ def eljur_auth(id):
 
 @app.route('/confirm/<string:id>', methods=['GET', 'POST'])
 def confirm_role(id):
-    form = ConfirmRole()
+    form = ConfirmRoleForm()
     if form.validate_on_submit():
         if form.password.data == 'admin':
             user = User.get(User.id == id)
@@ -36,6 +36,16 @@ def confirm_role(id):
         else:
             return render_template('confirm_result.html', result='Неверный пароль!')
     return render_template('confirm.html', form=form, action='/confirm/' + id)
+
+
+@app.route('/news', methods=['GET', 'POST'])
+def make_news():
+    form = NewsForm()
+    if form.validate_on_submit():
+        for user in User.select():
+            vk.messages.send(user_id=str(user.id), message='ОБЪЯВЛЕНИЕ!\n' + form.message.data)
+        return render_template('news_result.html', result='Сообщение успешно отослано всем пользователям бота!')
+    return render_template('news.html', form=form)
 
 
 @app.route('/review', methods=['GET', 'POST'])
@@ -116,6 +126,8 @@ def action_recognition(data, id, payload):
         statistics(id)
     elif payload['action'] == 'read_reviews':
         read_reviews(id)
+    elif payload['action'] == 'make_newsletter':
+        make_newsletter(id)
 
 
 def text_handler(data, id):

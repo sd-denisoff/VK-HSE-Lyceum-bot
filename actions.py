@@ -32,6 +32,8 @@ def show_capabilities(id):
         keyboard.add_line()
         keyboard.add_button(label='Статистика', color=VkKeyboardColor.POSITIVE, payload={'action': 'get_statistics'})
         keyboard.add_button(label='Отзывы', color=VkKeyboardColor.POSITIVE, payload={'action': 'read_reviews'})
+        keyboard.add_line()
+        keyboard.add_button(label='Рассылка', color=VkKeyboardColor.POSITIVE, payload={'action': 'make_newsletter'})
 
     vk.messages.send(user_id=id, message='Возможности 👇', keyboard=keyboard.get_keyboard())
 
@@ -102,3 +104,7 @@ def read_reviews(id):
     else:
         keyboard.add_button(label='Всё прочитано! (' + str(for_reading.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'capabilities'})
     vk.messages.send(user_id=id, message=review_temp.format(text=for_reading.text, date=for_reading.date), keyboard=keyboard.get_keyboard())
+
+
+def make_newsletter(id):
+    vk.messages.send(user_id=id, message='Страница создания рассылки 👇 \n' + APP_URL + '/news', keyboard=default_keyboard)

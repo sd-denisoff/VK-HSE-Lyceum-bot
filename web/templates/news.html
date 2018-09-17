@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang='ru'>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Рассылка | Лицей</title>
+</head>
+
+<body>
+    <form action='/news' method='POST'>
+        {{ form.hidden_tag() }}
+
+        <div>{{ form.message.label}}</div>
+        <div>{{ form.message(rows=5, cols=60) }}</div>
+        {% if form.message.errors %}
+            {% for error in form.message.errors %}
+                <div style="color: red;">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <br>
+
+        {{ form.submit }}
+    </form>
+</body>
+
+</html>
