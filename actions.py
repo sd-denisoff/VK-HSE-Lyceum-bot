@@ -15,10 +15,10 @@ def show_capabilities(id):
     if user.token is None:
         keyboard.add_button(label='Пройти авторизацию', color=VkKeyboardColor.DEFAULT, payload={'action': 'auth'})
     else:
-        keyboard.add_button(label='Узнать ДЗ', color=VkKeyboardColor.PRIMARY, payload={'action': 'homework'})
-        keyboard.add_button(label='Узнать оценки', color=VkKeyboardColor.PRIMARY, payload={'action': 'marks'})
+        keyboard.add_button(label='Расписание 📅', color=VkKeyboardColor.PRIMARY, payload={'action': 'schedule'})
+        keyboard.add_button(label='ДЗ 📚', color=VkKeyboardColor.PRIMARY, payload={'action': 'homework'})
         keyboard.add_line()
-        keyboard.add_button(label='Узнать расписание', color=VkKeyboardColor.PRIMARY, payload={'action': 'schedule'})
+        keyboard.add_button(label='Оценки 🏆', color=VkKeyboardColor.PRIMARY, payload={'action': 'marks'})
         keyboard.add_line()
         keyboard.add_button(label='Выйти из аккаунта ЭлЖур', color=VkKeyboardColor.DEFAULT, payload={'action': 'logout'})
 
@@ -93,6 +93,7 @@ def read_reviews(id):
     for_view = Review.select().where(Review.was_read == False).first()
     if for_view is None:
         vk.messages.send(user_id=id, message='Новых отзывов нет 🙁', keyboard=default_keyboard)
+        return
     else:
         for_view.was_read = True
         for_view.save()
