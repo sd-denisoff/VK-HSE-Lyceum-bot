@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang='ru'>
+{% extends "base.html" %}
 
-<head>
-    <meta charset='UTF-8'>
-    <title>Бот | Лицей ВШЭ</title>
-</head>
-
-<body>
+{% block content %}
     <h2>Рассылка</h2>
 
     <form action='/mailing' method='POST'>
@@ -34,6 +28,4 @@
 
         {{ form.submit }}
     </form>
-</body>
-
-</html>
+{% endblock content %}

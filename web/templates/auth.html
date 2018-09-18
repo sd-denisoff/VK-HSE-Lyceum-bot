@@ -1,41 +1,20 @@
-<!DOCTYPE html>
-<html lang='ru'>
+{% extends "base.html" %}
 
-<head>
-    <meta charset='UTF-8'>
-    <title>Бот | Лицей ВШЭ</title>
-</head>
+{% block head %}
+    {{ super() }}
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+{% endblock head %}
 
-<body>
-    <h2>Авторизация в ЭлЖур</h2>
-
-    <form action='{{ action }}' method='POST'>
-        {{ form.hidden_tag() }}
-
-        <div>{{ form.login.label}}</div>
-        <div>{{ form.login(rows=5, cols=60) }}</div>
-        {% if form.login.errors %}
-            {% for error in form.login.errors %}
-                <div style="color: red;">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
-
-        <br>
-
-        <div>{{ form.password.label}}</div>
-        <div>{{ form.password(rows=5, cols=60) }}</div>
-        {% if form.password.errors %}
-            {% for error in form.password.errors %}
-                <div style="color: red;">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
-
-        <br>
-
-        {{ form.submit }}
+{% block content %}
+    <form action="{{ action }}" class="form-signin text-center" method="POST">
+        <img class="mb-4" src="{{ url_for('static', filename='eljur_logo.jpg') }}" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Вход в ЭлЖур</h1>
+        <div>{{ form.login(class='form-control', type='text', placeholder='Логин') }}</div>
+        <div>{{ form.password(class='form-control', type='password', placeholder='Пароль') }}</div>
+        <div>{{ form.submit(class='btn btn-lg btn-primary btn-block', type='submit', placeholder='Войти') }}</div>
+        <p class="mt-5 mb-3 text-muted">© Лицей НИУ ВШЭ</p>
     </form>
-
-    <h4>Вырвиглазный дизайн поправим потом :)</h4>
-</body>
-
-</html>
+{% endblock content %}
