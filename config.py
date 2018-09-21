@@ -3,7 +3,7 @@ import vk_api
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
 
-APP_URL = 'https://cf929068.ngrok.io'
+APP_URL = 'https://dbbc5bf9.ngrok.io'
 
 CSRF_ENABLED = False
 WTF_CSRF_ENABLED = False

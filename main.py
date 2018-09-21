@@ -5,6 +5,7 @@ from flask import render_template
 from web.forms import AuthForm, ConfirmRoleForm, ReviewForm, MailingForm
 from ElJurAPI.ElJurRequest import ElJurRequest
 from ElJurAPI.ElJurCapab import *
+from QnAMakerAPI.QnAMakerCapab import *
 from calendar_keyboard import create_calendar
 from datetime import date
 
@@ -131,6 +132,8 @@ def action_recognition(data, id, payload):
         read_reviews(id)
     elif payload['action'] == 'make_newsletter':
         make_newsletter(id)
+    elif payload['action'] == 'get_bad_qna':
+        get_bad_qna(id)
 
 
 def text_handler(data, id):
@@ -140,6 +143,15 @@ def text_handler(data, id):
     elif data['text'] == 'Я админ':
         vk.messages.send(user_id=id, message='Страница подтверждения прав 👇 \n' + APP_URL + '/confirm/' + id, keyboard=default_keyboard)
     else:
+        response_generator(data, id)
+
+
+def response_generator(data, id):
+    r = generate_answer(data['text'])
+    if r[0]:
+        vk.messages.send(user_id=id, message=r[1], keyboard=default_keyboard)
+    else:
+        BadQnA.create(q=data['text'], answer=r[1])
         vk.messages.send(user_id=id, message='Извините, не совсем Вас понимаю 😔', keyboard=default_keyboard)
 
 

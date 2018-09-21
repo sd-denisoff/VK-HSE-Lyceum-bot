@@ -33,6 +33,8 @@ def show_capabilities(id):
         keyboard.add_button(label='Статистика', color=VkKeyboardColor.POSITIVE, payload={'action': 'get_statistics'})
         keyboard.add_button(label='Отзывы', color=VkKeyboardColor.POSITIVE, payload={'action': 'read_reviews'})
         keyboard.add_button(label='Рассылка', color=VkKeyboardColor.POSITIVE, payload={'action': 'make_newsletter'})
+        keyboard.add_line()
+        keyboard.add_button(label='Плохие вопросы-ответы', color=VkKeyboardColor.POSITIVE, payload={'action': 'get_bad_qna'})
 
     vk.messages.send(user_id=id, message='Возможности 👇', keyboard=keyboard.get_keyboard())
 
@@ -90,21 +92,39 @@ def get_statistics(id):
 
 def read_reviews(id):
     all = Review.select().count()
-    for_view = Review.select().where(Review.was_read == False).first()
-    if for_view is None:
+    review = Review.select().where(Review.was_read == False).first()
+    if review is None:
         vk.messages.send(user_id=id, message='Новых отзывов нет 🙁', keyboard=default_keyboard)
         return
     else:
-        for_view.was_read = True
-        for_view.save()
+        review.was_read = True
+        review.save()
     review_temp = '{text}\nДата: {date}'
     keyboard = VkKeyboard(one_time=True)
-    if for_view.id != all:
-        keyboard.add_button(label='Следующий (' + str(for_view.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'read_reviews'})
+    if review.id != all:
+        keyboard.add_button(label='Следующий (' + str(review.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'read_reviews'})
     else:
-        keyboard.add_button(label='Всё прочитано! (' + str(for_view.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'capabilities'})
-    vk.messages.send(user_id=id, message=review_temp.format(text=for_view.text, date=for_view.date), keyboard=keyboard.get_keyboard())
+        keyboard.add_button(label='Всё прочитано! (' + str(review.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'capabilities'})
+    vk.messages.send(user_id=id, message=review_temp.format(text=review.text, date=review.date), keyboard=keyboard.get_keyboard())
 
 
 def make_newsletter(id):
     vk.messages.send(user_id=id, message='Страница создания рассылки 👇 \n' + APP_URL + '/mailing', keyboard=default_keyboard)
+
+
+def get_bad_qna(id):
+    all = BadQnA.select().count()
+    qna = BadQnA.select().where(BadQnA.was_fixed == False).first()
+    if qna is None:
+        vk.messages.send(user_id=id, message='Плохих вопросов-ответов нет 👍', keyboard=default_keyboard)
+        return
+    else:
+        qna.was_fixed = True
+        qna.save()
+    qna_temp = 'Вопрос: {q}\nОтвет: {answer}'
+    keyboard = VkKeyboard(one_time=True)
+    if qna.id != all:
+        keyboard.add_button(label='Следующий (' + str(qna.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'get_bad_qna'})
+    else:
+        keyboard.add_button(label='Всё исправлено! (' + str(qna.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'capabilities'})
+    vk.messages.send(user_id=id, message=qna_temp.format(q=qna.q, answer=qna.answer), keyboard=keyboard.get_keyboard())

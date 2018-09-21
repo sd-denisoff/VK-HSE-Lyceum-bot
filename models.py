@@ -23,3 +23,13 @@ class Review(Model):
     class Meta:
         database = db
         db_table = 'Reviews'
+
+
+class BadQnA(Model):
+    q = TextField()
+    answer = TextField()
+    was_fixed = BooleanField(default=False)
+
+    class Meta:
+        database = db
+        db_table = 'BadQnA'
