@@ -26,9 +26,8 @@ class Review(Model):
 
 
 class BadQnA(Model):
-    q = TextField()
+    qn = TextField()
     answer = TextField()
-    was_fixed = BooleanField(default=False)
 
     class Meta:
         database = db

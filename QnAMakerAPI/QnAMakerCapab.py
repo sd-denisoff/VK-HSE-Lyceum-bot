@@ -1,4 +1,3 @@
-from models import *
 from QnAMakerAPI.QnAMakerRequest import QnAMakerRequest
 
 
@@ -14,24 +13,20 @@ def generate_answer(text):
         return False, r.query['message']
 
 
-# def update_base(msg, bot):
-#     user = User.get(User.id == msg.chat.id)
-#     payload = {
-#         'add': {
-#             'qnaPairs': [
-#                 {
-#                     'answer': msg.text,
-#                     'question': user.lastQ
-#                 }
-#             ]
-#         }
-#     }
-#     QnAMakerRequest('update', payload=payload)
-#     publish_base()
-#     bot.send_message(msg.chat.id, "Ответ записан!")
-#     user.act = None
-#     user.save()
+def update_base(question, answer):
+    payload = {
+        'add': {
+            'qnaPairs': [
+                {
+                    'answer': answer,
+                    'question': question
+                }
+            ]
+        }
+    }
+    QnAMakerRequest('update', payload=payload)
+    publish_base()
 
 
-# def publish_base():
-#     QnAMakerRequest('publish')
+def publish_base():
+    QnAMakerRequest('publish')

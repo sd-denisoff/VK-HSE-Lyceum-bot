@@ -2,7 +2,7 @@ from config import *
 from models import *
 from actions import *
 from flask import render_template
-from web.forms import AuthForm, ConfirmRoleForm, ReviewForm, MailingForm
+from web.forms import AuthForm, ConfirmRoleForm, ReviewForm, MailingForm, FixQnAForm
 from ElJurAPI.ElJurRequest import ElJurRequest
 from ElJurAPI.ElJurCapab import *
 from QnAMakerAPI.QnAMakerCapab import *
@@ -16,9 +16,8 @@ def eljur_auth(id):
     if form.validate_on_submit():
         r = ElJurRequest('/auth?login=' + form.login.data + '&password=' + form.password.data)
         if r.is_valid:
-            user = User.get(User.id == id)
-            user.token = r.query['token']
-            user.save()
+            user = User.update(token=r.query['token']).where(User.id == id)
+            user.execute()
             return render_template('result.html', result='Авторизация прошла успешно!')
         else:
             return render_template('result.html', result=r.query)
@@ -30,9 +29,8 @@ def confirm_role(id):
     form = ConfirmRoleForm()
     if form.validate_on_submit():
         if form.password.data == 'admin':
-            user = User.get(User.id == id)
-            user.role = 'admin'
-            user.save()
+            user = User.update(role='admin').where(User.id == id)
+            user.execute()
             return render_template('result.html', result='Права успешно подтверждены!')
         else:
             return render_template('result.html', result='Неверный пароль!')
@@ -59,6 +57,20 @@ def leave_review():
         Review.create(text=form.review.data, date=date.today().strftime('%d-%m-%Y'))
         return render_template('result.html', result='Спасибо за отзыв! Нам важно Ваше мнение :)')
     return render_template('review.html', form=form)
+
+
+@app.route('/fix/<string:qna_id>/<string:user_id>', methods=['GET', 'POST'])
+def fix_qna(qna_id, user_id):
+    form = FixQnAForm()
+    if form.validate_on_submit():
+        qna = BadQnA.get(BadQnA.id == qna_id)
+        update_base(qna.qn, form.new_answer.data)
+        qna.delete_instance()
+        next_qna = BadQnA.select().where(BadQnA.id > qna.id).first()
+        if next_qna is not None:
+            get_bad_qna(user_id, next_qna.id)
+        return render_template('result.html', result='Ответ исправлен!')
+    return render_template('fix.html', form=form, action='/fix/' + qna_id + '/' + user_id)
 
 
 @app.route('/', methods=['GET', 'HEAD'])
@@ -122,10 +134,6 @@ def action_recognition(data, id, payload):
         logout(id)
     elif payload['action'] == 'review':
         review(id)
-    elif payload['action'] == 'about':
-        about(id)
-    elif payload['action'] == 'help':
-        help(id)
     elif payload['action'] == 'get_statistics':
         get_statistics(id)
     elif payload['action'] == 'read_reviews':
@@ -133,7 +141,9 @@ def action_recognition(data, id, payload):
     elif payload['action'] == 'make_newsletter':
         make_newsletter(id)
     elif payload['action'] == 'get_bad_qna':
-        get_bad_qna(id)
+        get_bad_qna(id, payload.get('qna_id'))
+    elif payload['action'] == 'fix':
+        fix(id, payload['qna_id'])
 
 
 def text_handler(data, id):
@@ -151,7 +161,7 @@ def response_generator(data, id):
     if r[0]:
         vk.messages.send(user_id=id, message=r[1], keyboard=default_keyboard)
     else:
-        BadQnA.create(q=data['text'], answer=r[1])
+        BadQnA.create(qn=data['text'], answer=r[1])
         vk.messages.send(user_id=id, message='Извините, не совсем Вас понимаю 😔', keyboard=default_keyboard)
 
 
