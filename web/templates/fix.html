@@ -2,8 +2,9 @@
 
 {% block content %}
     <form action="{{ action }}" class="form-signin text-center" method="POST">
-        <img class="mb-4" src="{{ url_for('static', filename='qnamaker_logo.png') }}" alt="" width="85" height="85">
-        <h1 class="h3 mb-3 font-weight-normal">Исправление ответа</h1>
+        {{ form.hidden_tag() }}
+        <img class="mb-4" src="{{ url_for('static', filename='img/qnamaker.png') }}" alt="" width="80" height="80">
+        <p class="h3 mb-3 font-weight-normal">Исправление ответа</p>
         <div>{{ form.new_answer(class='form-control', type='text', placeholder='Новый ответ') }}</div>
         <div>{{ form.submit(class='btn btn-lg btn-primary btn-block', type='submit') }}</div>
         <p class="mt-5 mb-3 text-muted">© Лицей НИУ ВШЭ</p>

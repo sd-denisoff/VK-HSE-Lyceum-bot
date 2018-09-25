@@ -114,4 +114,4 @@ def get_bad_qna(id, qna_id):
 
 
 def fix(id, qna_id):
-    vk.messages.send(user_id=id, message='Страница исправления вопроса-ответа 👇 \n' + APP_URL + '/fix/' + qna_id + '/' + id)
+    vk.messages.send(user_id=id, message='Страница исправления вопроса-ответа 👇 \n' + APP_URL + '/fix/' + qna_id + '/' + id, keyboard=default_keyboard)

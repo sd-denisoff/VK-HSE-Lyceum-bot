@@ -1,31 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Рассылка</h2>
-
-    <form action='/mailing' method='POST'>
+    <form action="/mailing" class="form-signin text-center" method="POST">
         {{ form.hidden_tag() }}
-
-        <div>{{ form.message.label}}</div>
-        <div>{{ form.message(rows=5, cols=60) }}</div>
-        {% if form.message.errors %}
-            {% for error in form.message.errors %}
-                <div style="color: red;">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
-
-        <br>
-
-        <div>{{ form.sender.label}}</div>
-        <div>{{ form.sender(rows=5, cols=60) }}</div>
-        {% if form.sender.errors %}
-            {% for error in form.sender.errors %}
-                <div style="color: red;">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
-
-        <br>
-
-        {{ form.submit }}
+        <img class="mb-4" src="{{ url_for('static', filename='img/mailing.png') }}" alt="" width="85" height="85">
+        <p class="h3 mb-3 font-weight-normal">Рассылка</p>
+        <div>{{ form.message(class='form-control', type='text', placeholder='Сообщение') }}</div>
+        <div>{{ form.sender(class='form-control', type='text', placeholder='Отправитель') }}</div>
+        <div>{{ form.submit(class='btn btn-lg btn-primary btn-block', type='submit') }}</div>
+        <p class="mt-5 mb-3 text-muted">© Лицей НИУ ВШЭ</p>
     </form>
 {% endblock content %}

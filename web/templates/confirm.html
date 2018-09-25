@@ -1,21 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Подтверждение прав</h2>
-
-    <form action='{{ action }}' method='POST'>
+    <form action="{{ action }}" class="form-signin text-center" method="POST">
         {{ form.hidden_tag() }}
-
-        <div>{{ form.password.label}}</div>
-        <div>{{ form.password(rows=5, cols=60) }}</div>
-        {% if form.password.errors %}
-            {% for error in form.password.errors %}
-                <div style="color: red;">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
-
-        <br>
-
-        {{ form.submit }}
+        <img class="mb-4" src="{{ url_for('static', filename='img/admin.png') }}" alt="" width="85" height="85">
+        <p class="h3 mb-3 font-weight-normal">Подтверждение прав</p>
+        <div>{{ form.password(class='form-control', type='password', placeholder='Пароль') }}</div>
+        <div>{{ form.submit(class='btn btn-lg btn-primary btn-block', type='submit') }}</div>
+        <p class="mt-5 mb-3 text-muted">© Лицей НИУ ВШЭ</p>
     </form>
 {% endblock content %}

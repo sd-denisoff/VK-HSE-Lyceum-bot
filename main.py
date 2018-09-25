@@ -46,7 +46,7 @@ def mailing():
             message += '\nОтправитель: ' + form.sender.data
         user_ids = ', '.join([user.id for user in User.select()])
         vk.messages.send(user_ids=user_ids, message=message)
-        return render_template('result.html', result='Сообщение успешно разослано всем пользователям!')
+        return render_template('result.html', result='Сообщение успешно разослано пользователям бота!')
     return render_template('mailing.html', form=form)
 
 
@@ -55,7 +55,7 @@ def leave_review():
     form = ReviewForm()
     if form.validate_on_submit():
         Review.create(text=form.review.data, date=date.today().strftime('%d-%m-%Y'))
-        return render_template('result.html', result='Спасибо за отзыв! Нам важно Ваше мнение :)')
+        return render_template('result.html', result='Спасибо за отзыв!')
     return render_template('review.html', form=form)
 
 
