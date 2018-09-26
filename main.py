@@ -18,9 +18,9 @@ def eljur_auth(id):
         if r.is_valid:
             user = User.update(token=r.query['token']).where(User.id == id)
             user.execute()
-            return render_template('result.html', result='Авторизация прошла успешно!')
+            return render_template('success.html', result='Авторизация прошла успешно!')
         else:
-            return render_template('result.html', result=r.query)
+            return render_template('error.html', error=r.query)
     return render_template('auth.html', form=form, action='/auth/' + id)
 
 
@@ -31,9 +31,9 @@ def confirm_role(id):
         if form.password.data == 'admin':
             user = User.update(role='admin').where(User.id == id)
             user.execute()
-            return render_template('result.html', result='Права успешно подтверждены!')
+            return render_template('success.html', result='Права успешно подтверждены!')
         else:
-            return render_template('result.html', result='Неверный пароль!')
+            return render_template('error.html', error='Неверный пароль!')
     return render_template('confirm.html', form=form, action='/confirm/' + id)
 
 
@@ -46,7 +46,7 @@ def mailing():
             message += '\nОтправитель: ' + form.sender.data
         user_ids = ', '.join([user.id for user in User.select()])
         vk.messages.send(user_ids=user_ids, message=message)
-        return render_template('result.html', result='Сообщение успешно разослано пользователям бота!')
+        return render_template('success.html', result='Сообщение успешно разослано пользователям бота!')
     return render_template('mailing.html', form=form)
 
 
@@ -55,7 +55,7 @@ def leave_review():
     form = ReviewForm()
     if form.validate_on_submit():
         Review.create(text=form.review.data, date=date.today().strftime('%d-%m-%Y'))
-        return render_template('result.html', result='Спасибо за отзыв!')
+        return render_template('success.html', result='Спасибо за отзыв!')
     return render_template('review.html', form=form)
 
 
@@ -69,7 +69,7 @@ def fix_qna(qna_id, user_id):
         next_qna = BadQnA.select().where(BadQnA.id > qna.id).first()
         if next_qna is not None:
             get_bad_qna(user_id, next_qna.id)
-        return render_template('result.html', result='Ответ исправлен!')
+        return render_template('success.html', result='Ответ исправлен!')
     return render_template('fix.html', form=form, action='/fix/' + qna_id + '/' + user_id)
 
 

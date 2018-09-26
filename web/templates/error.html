@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="form-signin text-center">
+        <img class="mb-4" src="{{ url_for('static', filename='img/error.png') }}" alt="" width="85" height="85">
+        <p style="color:red;" class="h3 mb-3 font-weight-normal">{{ error }}</p>
+        <p class="mt-5 mb-3 text-muted">© Лицей НИУ ВШЭ</p>
+    </div>
+{% endblock content %}
