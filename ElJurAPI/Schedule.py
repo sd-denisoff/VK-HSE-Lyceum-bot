@@ -26,8 +26,7 @@ class ScheduleState(AbstractState):
                              keyboard=default_keyboard)
             return None
         schedule = r.query.get('students', {})
-        key = list(schedule.keys())[0]
-        schedule = schedule[key].get('days', {})
+        schedule = schedule[user.eljur_id].get('days', {})
         return schedule
 
     def send(self, id, schedule):

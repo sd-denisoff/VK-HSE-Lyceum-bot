@@ -29,8 +29,7 @@ class HomeworkState(AbstractState):
                              keyboard=default_keyboard)
             return None
         homework = r.query.get('students', {})
-        key = list(homework.keys())[0]
-        homework = homework[key].get('days', {})
+        homework = homework[user.eljur_id].get('days', {})
         return homework
 
     def send(self, id, homework):

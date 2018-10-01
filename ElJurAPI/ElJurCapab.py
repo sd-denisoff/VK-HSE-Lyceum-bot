@@ -3,6 +3,7 @@ from models import *
 from ElJurAPI.Schedule import ScheduleState
 from ElJurAPI.Homework import HomeworkState
 from ElJurAPI.Marks import MarksState
+from ElJurAPI.UserInfo import UserInfoState
 from actions import default_keyboard
 from calendar_keyboard import create_calendar
 import datetime
@@ -22,6 +23,9 @@ class EljurCapab(object):
         elif option == 'marks':
             marks_state = MarksState()
             self._state = marks_state
+        elif option == 'user_info':
+            user_info_state = UserInfoState()
+            self._state = user_info_state
 
     def kind_of_content(self, id):
         user = User.get(User.id == id)

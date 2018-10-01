@@ -18,6 +18,8 @@ def eljur_auth(id):
         if r.is_valid:
             user = User.update(token=r.query['token']).where(User.id == id)
             user.execute()
+            eljur_capab.change_state('user_info')
+            eljur_capab.get_content(id)
             return render_template('success.html', result='Авторизация прошла успешно!')
         else:
             return render_template('error.html', error=r.query)
@@ -166,4 +168,4 @@ def response_generator(data, id):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080)

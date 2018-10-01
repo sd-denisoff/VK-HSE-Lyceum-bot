@@ -16,8 +16,7 @@ class MarksState(AbstractState):
             vk.messages.send(user_id=id, message='Оценок на этой неделе ещё нет 😔', keyboard=default_keyboard)
             return None
         marks = r.query.get('students', {})
-        key = list(marks.keys())[0]
-        marks = marks[key].get('lessons', {})
+        marks = marks[user.eljur_id].get('lessons', {})
         return marks
 
     def send(self, id, marks):
