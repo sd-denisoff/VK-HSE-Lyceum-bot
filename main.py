@@ -43,12 +43,15 @@ def confirm_role(id):
 def mailing():
     form = MailingForm()
     if form.validate_on_submit():
-        message = 'ОБЪЯВЛЕНИЕ!\n' + form.message.data
+        message = 'СООБЩЕНИЕ!\n' + form.message.data
         if form.sender.data:
             message += '\nОтправитель: ' + form.sender.data
-        user_ids = ', '.join([user.id for user in User.select()])
+        if form.receivers.data == 'all':
+            user_ids = ', '.join([user.id for user in User.select()])
+        else:
+            user_ids = ', '.join([user.id for user in User.select().where(User.group == form.receivers.data)])
         vk.messages.send(user_ids=user_ids, message=message)
-        return render_template('success.html', result='Сообщение успешно разослано пользователям бота!')
+        return render_template('success.html', result='Сообщение успешно разослано!')
     return render_template('mailing.html', form=form)
 
 

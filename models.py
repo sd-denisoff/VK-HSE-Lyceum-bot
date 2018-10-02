@@ -12,6 +12,16 @@ class User(Model):
     eljur_id = TextField(null=True, default=None)
     date = TextField(default='')
 
+    @staticmethod
+    def get_groups():
+        users = User.select()
+        groups = list()
+        groups.append(('all', 'Всем'))
+        for user in users:
+            option = (user.group, user.group)
+            groups.append(option)
+        return set(groups)
+
     class Meta:
         database = db
         db_table = 'Users'

@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, SelectField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length
+from models import User
 
 
 class AuthForm(FlaskForm):
@@ -22,6 +23,7 @@ class ReviewForm(FlaskForm):
 
 class MailingForm(FlaskForm):
     message = StringField(label='Сообщение для рассылки', validators=[DataRequired(message='Это обязательное поле')])
+    receivers = SelectField(label='Получатели', choices=User.get_groups())
     sender = StringField(label='Отправитель')
     submit = SubmitField('Отправить')
 
