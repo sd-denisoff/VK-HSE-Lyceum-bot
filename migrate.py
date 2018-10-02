@@ -6,5 +6,5 @@ User.create_table()
 Review.drop_table()
 Review.create_table()
 
-BadQnA.drop_table()
-BadQnA.create_table()
+QnA.drop_table()
+QnA.create_table()

@@ -37,10 +37,13 @@ class Review(Model):
         db_table = 'Reviews'
 
 
-class BadQnA(Model):
+class QnA(Model):
     qn = TextField()
     answer = TextField()
+    score = IntegerField(null=True, default=None)
+    time = DateTimeField(null=True, default=None)
+    is_bad = BooleanField()
 
     class Meta:
         database = db
-        db_table = 'BadQnA'
+        db_table = 'QnA'

@@ -31,7 +31,7 @@ def show_capabilities(id):
         keyboard.add_button(label='Отзывы', color=VkKeyboardColor.POSITIVE, payload={'action': 'read_reviews'})
         keyboard.add_button(label='Рассылка', color=VkKeyboardColor.POSITIVE, payload={'action': 'make_newsletter'})
         keyboard.add_line()
-        keyboard.add_button(label='Плохие вопросы-ответы', color=VkKeyboardColor.POSITIVE, payload={'action': 'get_bad_qna'})
+        keyboard.add_button(label='Вопросы-ответы', color=VkKeyboardColor.POSITIVE, payload={'action': 'get_qna'})
 
     vk.messages.send(user_id=id, message='Возможности 👇', keyboard=keyboard.get_keyboard())
 
@@ -93,25 +93,5 @@ def make_newsletter(id):
     vk.messages.send(user_id=id, message='Страница создания рассылки 👇 \n' + APP_URL + '/mailing', keyboard=default_keyboard)
 
 
-def get_bad_qna(id, qna_id):
-    if qna_id is None:
-        qna = BadQnA.select().first()
-    else:
-        qna = BadQnA.get(BadQnA.id == qna_id)
-    if qna is None:
-        vk.messages.send(user_id=id, message='Плохих вопросов-ответов нет 👍', keyboard=default_keyboard)
-        return
-    qna_temp = 'Вопрос: {qn}\nОтвет: {answer}'
-    keyboard = VkKeyboard(one_time=True)
-    all = BadQnA.select()[-1].id
-    next_qna = BadQnA.select().where(BadQnA.id > qna.id).first()
-    keyboard.add_button(label='Исправить 🔧', color=VkKeyboardColor.POSITIVE, payload={'action': 'fix', 'qna_id': str(qna.id)})
-    if qna.id != all:
-        keyboard.add_button(label='Следующий (' + str(qna.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'get_bad_qna', 'qna_id': next_qna.id})
-    else:
-        keyboard.add_button(label='Завершить!', color=VkKeyboardColor.PRIMARY, payload={'action': 'capabilities'})
-    vk.messages.send(user_id=id, message=qna_temp.format(qn=qna.qn, answer=qna.answer), keyboard=keyboard.get_keyboard())
-
-
-def fix(id, qna_id):
-    vk.messages.send(user_id=id, message='Страница исправления вопроса-ответа 👇 \n' + APP_URL + '/fix/' + qna_id + '/' + id, keyboard=default_keyboard)
+def get_qna(id):
+    vk.messages.send(user_id=id, message='Страница вопросов-ответов 👇 \n' + APP_URL + '/qna', keyboard=default_keyboard)

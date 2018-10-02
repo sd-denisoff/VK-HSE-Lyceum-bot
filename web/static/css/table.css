@@ -1,0 +1,39 @@
+table {
+  margin: 25px auto;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 10px 20px 10px 20px;
+}
+
+tr {
+  transition: .3s all;
+}
+
+tr:hover {
+  background-color: #179;
+  color: white;
+}
+
+th {
+  padding: 10px;
+}
+
+.left {
+  max-width: 400px;
+  border-radius: 10px 0 0 10px;
+}
+
+.right {
+  border-radius: 0 10px 10px 0;
+}
+
+.link {
+  color: rgb(24, 162, 14);
+}
+
+.centr {
+  margin: auto;
+}
+

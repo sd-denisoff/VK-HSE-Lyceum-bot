@@ -6,11 +6,11 @@ def generate_answer(text):
     r = QnAMakerRequest('/generateAnswer', payload)
     if r.isValid:
         if r.query['score'] > 80:
-            return True, r.query['answer']
+            return True, r.query['answer'], r.query['score']
         else:
-            return False, r.query['answer']
+            return False, r.query['answer'], r.query['score']
     else:
-        return False, r.query['message']
+        return False, r.query['message'], None
 
 
 def update_base(question, answer):

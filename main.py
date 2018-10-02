@@ -64,18 +64,21 @@ def leave_review():
     return render_template('review.html', form=form)
 
 
-@app.route('/fix/<string:qna_id>/<string:user_id>', methods=['GET', 'POST'])
-def fix_qna(qna_id, user_id):
+@app.route('/qna', methods=['GET'])
+def qna():
+    all_qna = QnA.select()
+    return render_template('qna.html', all_qna=all_qna)
+
+
+@app.route('/fix/<string:qna_id>', methods=['GET', 'POST'])
+def fix_qna(qna_id):
     form = FixQnAForm()
     if form.validate_on_submit():
-        qna = BadQnA.get(BadQnA.id == qna_id)
+        qna = QnA.get(QnA.id == qna_id)
         update_base(qna.qn, form.new_answer.data)
         qna.delete_instance()
-        next_qna = BadQnA.select().where(BadQnA.id > qna.id).first()
-        if next_qna is not None:
-            get_bad_qna(user_id, next_qna.id)
         return render_template('success.html', result='Ответ исправлен!')
-    return render_template('fix.html', form=form, action='/fix/' + qna_id + '/' + user_id)
+    return render_template('fix.html', form=form, action='/fix/' + qna_id)
 
 
 @app.route('/', methods=['GET', 'HEAD'])
@@ -145,8 +148,8 @@ def action_recognition(data, id, payload):
         read_reviews(id)
     elif payload['action'] == 'make_newsletter':
         make_newsletter(id)
-    elif payload['action'] == 'get_bad_qna':
-        get_bad_qna(id, payload.get('qna_id'))
+    elif payload['action'] == 'get_qna':
+        get_qna(id)
     elif payload['action'] == 'fix':
         fix(id, payload['qna_id'])
 
@@ -163,10 +166,10 @@ def text_handler(data, id):
 
 def response_generator(data, id):
     r = generate_answer(data['text'])
+    QnA.create(qn=data['text'], answer=r[1], score=r[2], time=datetime.datetime.now().strftime('%d-%m-%Y %H:%M'), is_bad=not r[0])
     if r[0]:
         vk.messages.send(user_id=id, message=r[1], keyboard=default_keyboard)
     else:
-        BadQnA.create(qn=data['text'], answer=r[1])
         vk.messages.send(user_id=id, message='Извините, не совсем Вас понимаю 😔', keyboard=default_keyboard)
 
 
