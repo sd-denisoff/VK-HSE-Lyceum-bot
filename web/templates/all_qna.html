@@ -19,12 +19,12 @@
             </tr>
             {% for qna in all_qna %}
                 <tr>
-                    <td class='left'>{{ qna.id }}</td>
+                    <td class='left highlight'>{{ qna.id }}</td>
                     <td>{{ qna.qn }}</td>
                     <td>{{ qna.answer }}</td>
                     <td>{{ qna.score }}</td>
                     <td>{{ qna.time }}</td>
-                    <td class='right'><a class='link' href="{{ url_for('fix_qna', qna_id=qna.id) }}">Исправить!</a></td>
+                    <td class='right'><a class='highlight' href="{{ url_for('fix_qna', qna_id=qna.id) }}">Исправить!</a></td>
                 </tr>
             {% endfor %}
         </table>

@@ -28,7 +28,7 @@ def show_capabilities(id):
     if user.role == 'admin':
         keyboard.add_line()
         keyboard.add_button(label='Статистика', color=VkKeyboardColor.POSITIVE, payload={'action': 'get_statistics'})
-        keyboard.add_button(label='Отзывы', color=VkKeyboardColor.POSITIVE, payload={'action': 'read_reviews'})
+        keyboard.add_button(label='Отзывы', color=VkKeyboardColor.POSITIVE, payload={'action': 'read_reviews', 'send_link': True})
         keyboard.add_button(label='Рассылка', color=VkKeyboardColor.POSITIVE, payload={'action': 'make_newsletter'})
         keyboard.add_line()
         keyboard.add_button(label='Вопросы-ответы', color=VkKeyboardColor.POSITIVE, payload={'action': 'get_qna'})

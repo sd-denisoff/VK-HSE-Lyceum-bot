@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+{% endblock head %}
+
+{% block content %}
+    <div class="text-center centr">
+
+        <table>
+            <tr>
+                <th>№</th>
+                <th>Текст</th>
+                <th>Дата</th>
+            </tr>
+            {% for review in all_reviews %}
+                <tr>
+                    <td class='left highlight'>{{ review.id }}</td>
+                    <td>{{ review.text }}</td>
+                    <td class='right'>{{ review.date }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <p class="mt-5 mb-3 text-muted">© Лицей НИУ ВШЭ</p>
+    </div>
+{% endblock content %}

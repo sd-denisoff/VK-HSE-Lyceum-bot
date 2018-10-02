@@ -64,10 +64,16 @@ def leave_review():
     return render_template('review.html', form=form)
 
 
+@app.route('/all_reviews', methods=['GET'])
+def all_reviews():
+    all_reviews = Review.select()
+    return render_template('all_reviews.html', all_reviews=all_reviews)
+
+
 @app.route('/qna', methods=['GET'])
-def qna():
+def all_qna():
     all_qna = QnA.select()
-    return render_template('qna.html', all_qna=all_qna)
+    return render_template('all_qna.html', all_qna=all_qna)
 
 
 @app.route('/fix/<string:qna_id>', methods=['GET', 'POST'])
@@ -145,13 +151,13 @@ def action_recognition(data, id, payload):
     elif payload['action'] == 'get_statistics':
         get_statistics(id)
     elif payload['action'] == 'read_reviews':
+        if payload.get('send_link') is not None:
+            vk.messages.send(user_id=id, message='Все отзывы 👇 \n' + APP_URL + '/all_reviews', keyboard=default_keyboard)
         read_reviews(id)
     elif payload['action'] == 'make_newsletter':
         make_newsletter(id)
     elif payload['action'] == 'get_qna':
         get_qna(id)
-    elif payload['action'] == 'fix':
-        fix(id, payload['qna_id'])
 
 
 def text_handler(data, id):
