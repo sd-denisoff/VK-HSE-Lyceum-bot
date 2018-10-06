@@ -15,5 +15,6 @@ class UserInfoState(AbstractState):
         user = User.get(User.id == id)
         user.eljur_id = user_info.get('name')
         group_info = user_info.get('relations', {}).get('groups', {})
-        user.group = list(group_info.keys())[0]
+        if isinstance(group_info, dict):
+            user.group = list(group_info.keys())[0]
         user.save()
