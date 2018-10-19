@@ -1,0 +1,15 @@
+----- Baikal -----
+FILE: Baikal.h5
+
+VERSION: 1.0
+DATE: 24.06.18
+LANGUAGE: ru/RU
+
+INPUT DIM: 40
+OUTPUT DIM: 4
+
+OUTPUT EXAMPLES:
+homework
+schedule
+other
+marks

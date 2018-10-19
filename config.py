@@ -1,9 +1,9 @@
 from flask import Flask, request, json
 import vk_api
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
+from textParsing.brain import brain
 
-
-APP_URL = 'https://0f3ed273.ngrok.io'
+APP_URL = 'https://79dbe0ca.ngrok.io'
 
 CSRF_ENABLED = False
 WTF_CSRF_ENABLED = False
@@ -18,3 +18,5 @@ confirmation_token = 'c90019ed'
 
 session = vk_api.VkApi(token=access_token)
 vk = session.get_api()
+
+b = brain()

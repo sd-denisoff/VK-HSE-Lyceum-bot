@@ -1,0 +1,4 @@
+homework
+schedule
+other
+marks
