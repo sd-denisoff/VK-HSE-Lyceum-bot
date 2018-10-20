@@ -182,13 +182,13 @@ def response_generator(data, id):
         for r in responses:
             if r['answered']:
                 answered = True
-                keyboard = default_keyboard
+                keyboard = VkKeyboard(one_time=True)
+                keyboard.add_button(label='Все возможности', color=VkKeyboardColor.DEFAULT, payload={'action': 'capabilities'})
+                keyboard.add_line()
                 if r.get('quickAnswers') is not None:
-                    keyboard = VkKeyboard(one_time=True)
                     for button in r['quickAnswers']:
                         keyboard.add_button(label=button, color=VkKeyboardColor.DEFAULT)
-                    keyboard = keyboard.get_keyboard()
-                vk.messages.send(user_id=id, message=r['generatedText'], keyboard=keyboard)
+                vk.messages.send(user_id=id, message=r['generatedText'], keyboard=keyboard.get_keyboard())
             else:
                 answered = True
                 if r['class'] == 'commands':
