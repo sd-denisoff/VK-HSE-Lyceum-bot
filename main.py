@@ -67,13 +67,21 @@ def leave_review():
 @app.route('/all_reviews', methods=['GET'])
 def all_reviews():
     all_reviews = Review.select()
-    return render_template('all_reviews.html', all_reviews=all_reviews)
+    if len(all_reviews):
+        is_content = True
+    else:
+        is_content = False
+    return render_template('all_reviews.html', all_reviews=all_reviews, is_content=is_content)
 
 
 @app.route('/qna', methods=['GET'])
 def all_qna():
     all_qna = QnA.select()
-    return render_template('all_qna.html', all_qna=all_qna)
+    if len(all_qna):
+        is_content = True
+    else:
+        is_content = False
+    return render_template('all_qna.html', all_qna=all_qna, is_content=is_content)
 
 
 @app.route('/fix/<string:qna_id>', methods=['GET', 'POST'])
@@ -173,10 +181,10 @@ def text_handler(data, id):
 def response_generator(data, id):
     user = User.get(User.id == id)
     r = generate_answer(data['text'])
-    QnA.create(qn=data['text'], answer=r[1], score=r[2], time=datetime.datetime.now().strftime('%d-%m-%Y %H:%M'), is_bad=not r[0])
     if r[0]:
         vk.messages.send(user_id=id, message=r[1], keyboard=default_keyboard)
     else:
+        QnA.create(qn=data['text'], answer=r[1], score=r[2])
         responses = b.get(id, data['text'])
         answered = False
         for r in responses:

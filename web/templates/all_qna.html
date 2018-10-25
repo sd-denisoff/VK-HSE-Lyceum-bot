@@ -7,7 +7,7 @@
 
 {% block content %}
     <div class="text-center centr">
-
+    {% if is_content %}
         <table>
             <tr>
                 <th>№</th>
@@ -30,5 +30,8 @@
         </table>
 
         <p class="mt-5 mb-3 text-muted">© Лицей НИУ ВШЭ</p>
+    {% else %}
+        <p class="h3 mb-3 font-weight-normal">Вопросы-ответы отсутствуют</p>
+    {% endif %}
     </div>
 {% endblock content %}

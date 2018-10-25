@@ -3,7 +3,7 @@ import vk_api
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from textParsing.brain import brain
 
-APP_URL = 'https://3b316637.ngrok.io'
+APP_URL = 'https://68d178b6.ngrok.io'
 
 CSRF_ENABLED = False
 WTF_CSRF_ENABLED = False

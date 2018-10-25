@@ -1,4 +1,5 @@
 from peewee import *
+from datetime import datetime
 
 
 db = SqliteDatabase('database.db')
@@ -42,8 +43,7 @@ class QnA(Model):
     qn = TextField()
     answer = TextField()
     score = IntegerField(null=True, default=None)
-    time = DateTimeField(null=True, default=None)
-    is_bad = BooleanField()
+    time = DateTimeField(null=True, default=datetime.now().strftime('%d-%m-%Y %H:%M'))
 
     class Meta:
         database = db
