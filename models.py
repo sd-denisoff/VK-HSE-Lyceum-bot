@@ -18,8 +18,9 @@ class User(Model):
         groups = list()
         groups.append(('all', 'Всем'))
         for user in users:
-            option = (user.group, user.group)
-            groups.append(option)
+            if user.group is not None:
+                option = (user.group, user.group)
+                groups.append(option)
         return set(groups)
 
     class Meta:

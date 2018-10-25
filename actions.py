@@ -58,7 +58,7 @@ def auth(data, id):
 def logout(id):
     user = User.update(token=None).where(User.id == id)
     user.execute()
-    vk.messages.send(user_id=id, message='Готово! Для получения расписания/ДЗ потребуется повторная авторизация', keyboard=default_keyboard)
+    vk.messages.send(user_id=id, message='Готово! Для последующего получения расписания/оценок/ДЗ потребуется повторная авторизация', keyboard=default_keyboard)
 
 
 def review(id):
@@ -84,6 +84,7 @@ def read_reviews(id):
     all = Review.select().count()
     if review.id != all:
         keyboard.add_button(label='Следующий (' + str(review.id) + '/' + str(all) + ')', color=VkKeyboardColor.PRIMARY, payload={'action': 'read_reviews'})
+        keyboard.add_button(label='Возможности', color=VkKeyboardColor.DEFAULT, payload={'action': 'capabilities'})
     else:
         keyboard.add_button(label='Всё прочитано!', color=VkKeyboardColor.PRIMARY, payload={'action': 'capabilities'})
     vk.messages.send(user_id=id, message=review_temp.format(text=review.text, date=review.date), keyboard=keyboard.get_keyboard())

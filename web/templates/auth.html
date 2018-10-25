@@ -5,6 +5,7 @@
         {{ form.hidden_tag() }}
         <img class="mb-4" src="{{ url_for('static', filename='img/eljur.jpg') }}" alt="" width="75" height="75">
         <p class="h3 mb-3 font-weight-normal">Вход в ЭлЖур</p>
+        <p class="h6 mb-3 font-weight-normal">(все данные конфиденциальны)</p>
         <div>{{ form.login(class='form-control', type='text', placeholder='Логин') }}</div>
         <div>{{ form.password(class='form-control', type='password', placeholder='Пароль') }}</div>
         <div>{{ form.submit(class='btn btn-lg btn-primary btn-block', type='submit') }}</div>
