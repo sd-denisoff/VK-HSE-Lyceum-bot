@@ -17,12 +17,13 @@ class User(Model):
     def get_groups():
         users = User.select()
         groups = list()
-        groups.append(('all', 'Всем'))
         for user in users:
             if user.group is not None:
                 option = (user.group, user.group)
                 groups.append(option)
-        return set(groups)
+        groups = list(set(groups))
+        groups.insert(0, 'Всем')
+        return groups
 
     class Meta:
         database = db
