@@ -67,12 +67,13 @@ def review(id):
 
 def get_statistics(id):
     users = User.select()
-    response = 'Зарегистрировано - ' + str(users.count()) + '\n' + 'Авторизовано - ' + str(users.where(User.token != None).count() + '\n')
+    response = 'Зарегистрировано - ' + str(users.count()) + '\n' + 'Авторизовано - ' + str(users.where(User.token != None).count()) + '\n\n'
     groups = dict()
     for user in users:
-        if groups.get(user.group) is None:
-            groups[user.group] = 0
-        groups[user.group] += 1
+        if user.group is not None:
+            if groups.get(user.group) is None:
+                groups[user.group] = 0
+            groups[user.group] += 1
     for k, v in groups.items():
         response += k + ' - ' + str(v) + '\n'
     vk.messages.send(user_id=id, message=response, keyboard=default_keyboard)

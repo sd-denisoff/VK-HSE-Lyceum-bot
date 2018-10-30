@@ -22,7 +22,7 @@ class User(Model):
                 option = (user.group, user.group)
                 groups.append(option)
         groups = list(set(groups))
-        groups.insert(0, 'Всем')
+        groups.insert(0, ('all', 'Всем'))
         return groups
 
     class Meta:
