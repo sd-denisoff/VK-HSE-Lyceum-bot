@@ -18,8 +18,11 @@ def eljur_auth(id):
         if r.is_valid:
             user = User.update(token=r.query['token']).where(User.id == id)
             user.execute()
-            eljur_capab.change_state('user_info')
-            eljur_capab.get_content(id)
+            try:
+                eljur_capab.change_state('user_info')
+                eljur_capab.get_content(id)
+            except Exception as e:
+                print(str(e))
             return render_template('success.html', result='Авторизация прошла успешно!')
         else:
             return render_template('error.html', error=r.query)
